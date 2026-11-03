@@ -3,10 +3,11 @@ const playerButtons= $('#playerButtons');
 const humanScoreP = $('#humanScore');
 const computerScoreP = $('#computerScore');
 const container = $('.container');
+const eventLog = $('#event-log')
 let humanScore=0;
 let computerScore=0;
-humanScoreP.textContent = `Human Score: ${humanScore}`;
-computerScoreP.textContent = `Computer Score: ${computerScore}`;
+humanScoreP.textContent = `Human Score= ${humanScore}`;
+computerScoreP.textContent = `Computer Score= ${computerScore}`;
 
 function getComputerChoice(){
     let caseNum= Math.floor(Math.random()*3);
@@ -49,20 +50,20 @@ function camelToSpace(str) {
 playerButtons.addEventListener('click', (event) =>{
     const button= event.target.closest('button');
 
-    if (!button || !playerButtons.contains(button)) return;
+    if (!button) return;
 
     const playerChoice= button.dataset.choice;
-    const computerChoice = getComputerChoice()
+    const computerChoice = getComputerChoice();
     const result=playRound(playerChoice,computerChoice);
     if (result==='humanWin'){
         humanScore++;
-        humanScoreP.textContent=`Human Score=${humanScore}`
+        humanScoreP.textContent=`Human Score=${humanScore}`;
     }
     else if (result==='computerWin'){
         computerScore++;
-        computerScoreP.textContent=`Computer Score=${computerScore}`
+        computerScoreP.textContent=`Computer Score=${computerScore}`;
     }
     const resultText=document.createElement('p');
     resultText.textContent=(`You chose ${playerChoice}. Computer chose ${computerChoice}. Result: ${camelToSpace(result)}`);
-    container.appendChild(resultText);
+    eventLog.appendChild(resultText);
 })
