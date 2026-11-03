@@ -16,29 +16,44 @@ function getHumanChoice(){
 
 function playRound(humanChoice,computerChoice){
     humanChoice=humanChoice.toLowerCase();
-    if (humanChoice===computerChoice) return;
+    if (humanChoice===computerChoice) return 0;
 
-    if (humanChoice==="paper"){
-        if (computerChoice==="scissors") computerScore++;
-        else if(computerChoice==="rock") humanScore++;
+    else if (humanChoice==="paper"){
+        if (computerChoice==="scissors") return 1;
+        else if(computerChoice==="rock") return 2;
     }
+
     else if(humanChoice==="rock"){
-        if(computerChoice==="paper") computerScore++;
-        else if(computerChoice==="scissors") humanScore++;
+        if(computerChoice==="paper") return 1;
+        else if(computerChoice==="scissors") return 2;
 
     }
+
     else if(humanChoice==="scissors"){
-        if(computerChoice==="rock") computerScore++;
-        else if(computerChoice==="paper") humanScore++;
+        if(computerChoice==="rock") return 1;
+        else if(computerChoice==="paper") return 2;
     }
 }
+
 
 function playGame(rounds){
-    for(let i=0; i<1; i++){
-        playRound(getHumanChoice(),getComputerChoice());
-    }
+    let humanScore=0,computerScore=0;
+    for(let i=0; i<rounds; i++){
+        let val=playRound(getHumanChoice(),getComputerChoice());
+        switch (val){
+            case 0:
+                {console.log("draw, no winner")}
+                break;
+            case 1:
+                {computerScore++; console.log("computer won")}
+                break;
+            case 2:
+                {humanScore++; console.log("human won")}
+                break;
+            }
+    }   
+    console.log(humanScore + " " + computerScore)
 
 }
 
-let humanScore=0, computerScore=0;
 playGame(5)
