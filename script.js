@@ -1,3 +1,13 @@
+const $ = (selector) => document.querySelector(selector);
+const playerButtons= $('#playerButtons');
+const humanScoreP = $('#humanScore');
+const computerScoreP = $('#computerScore');
+const container = $('.container');
+let humanScore=0;
+let computerScore=0;
+humanScoreP.textContent = `Human Score: ${humanScore}`;
+computerScoreP.textContent = `Computer Score: ${computerScore}`;
+
 function getComputerChoice(){
     let caseNum= Math.floor(Math.random()*3);
     switch (caseNum){
@@ -10,50 +20,49 @@ function getComputerChoice(){
     }
 }
 
-function getHumanChoice(){
-    return String(prompt("What is your choice?"));
-}
 
 function playRound(humanChoice,computerChoice){
     humanChoice=humanChoice.toLowerCase();
-    if (humanChoice===computerChoice) return 0;
+    if (humanChoice===computerChoice) return "draw";
 
     else if (humanChoice==="paper"){
-        if (computerChoice==="scissors") return 1;
-        else if(computerChoice==="rock") return 2;
+        if (computerChoice==="scissors") return "computerWin";
+        else if(computerChoice==="rock") return "humanWin";
     }
 
     else if(humanChoice==="rock"){
-        if(computerChoice==="paper") return 1;
-        else if(computerChoice==="scissors") return 2;
+        if(computerChoice==="paper") return "computerWin";
+        else if(computerChoice==="scissors") return "humanWin";
 
     }
 
     else if(humanChoice==="scissors"){
-        if(computerChoice==="rock") return 1;
-        else if(computerChoice==="paper") return 2;
+        if(computerChoice==="rock") return "computerWin";
+        else if(computerChoice==="paper") return "humanWin";
     }
 }
 
-
-function playGame(rounds){
-    let humanScore=0,computerScore=0;
-    for(let i=0; i<rounds; i++){
-        let val=playRound(getHumanChoice(),getComputerChoice());
-        switch (val){
-            case 0:
-                {console.log("draw, no winner")}
-                break;
-            case 1:
-                {computerScore++; console.log("computer won")}
-                break;
-            case 2:
-                {humanScore++; console.log("human won")}
-                break;
-            }
-    }   
-    console.log(humanScore + " " + computerScore)
-
+function camelToSpace(str) {
+    return str.replace(/([A-Z])/g, " $1").toLowerCase();
 }
 
-playGame(5)
+playerButtons.addEventListener('click', (event) =>{
+    const button= event.target.closest('button');
+
+    if (!button || !playerButtons.contains(button)) return;
+
+    const playerChoice= button.dataset.choice;
+    const computerChoice = getComputerChoice()
+    const result=playRound(playerChoice,computerChoice);
+    if (result==='humanWin'){
+        humanScore++;
+        humanScoreP.textContent=`Human Score=${humanScore}`
+    }
+    else if (result==='computerWin'){
+        computerScore++;
+        computerScoreP.textContent=`Computer Score=${computerScore}`
+    }
+    const resultText=document.createElement('p');
+    resultText.textContent=(`You chose ${playerChoice}. Computer chose ${computerChoice}. Result: ${camelToSpace(result)}`);
+    container.appendChild(resultText);
+})
